@@ -6,6 +6,36 @@ using System.Runtime.CompilerServices;
 namespace Featurize.DomainModel;
 
 /// <summary>
+/// 
+/// </summary>
+public static class AggregateRoot
+{
+    /// <summary>
+    /// Creates a AggregateRoot.
+    /// </summary>
+    /// <typeparam name="TAggregate"></typeparam>
+    /// <typeparam name="TId"></typeparam>
+    /// <param name="aggregateId"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException">Throw an exception if the method is not implemented.</exception>
+    public static TAggregate Create<TAggregate, TId>(TId aggregateId)
+        where TAggregate : AggregateRoot<TAggregate, TId>
+        where TId: struct
+    {
+        var methodName = "Create";
+        var type = typeof(TAggregate);
+        var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+
+        if(method != null)
+        {
+            var result = method.Invoke(null, new object[] { aggregateId });
+            if(result is TAggregate returnValue) return returnValue;
+        }
+        throw new NotImplementedException($"The aggregate does not have a public static method 'public static {type.Name} {methodName}({typeof(TId).Name} id)'.");
+    }
+}
+
+/// <summary>
 /// Base class for an AggregateRoot.
 /// </summary>
 /// <typeparam name="TSelf">The type of the aggregate.</typeparam>
@@ -13,8 +43,6 @@ namespace Featurize.DomainModel;
 public abstract class AggregateRoot<TSelf, TId>
     where TId : struct
 {
-    private const string ApplyMehodName = "Apply";
-
     private EventCollection<TId> _events;
 
     /// <summary>
@@ -93,6 +121,7 @@ public abstract class AggregateRoot<TSelf, TId>
         }
     }
 
+    private const string ApplyMehodName = "Apply";
     private void ApplyInternal(EventRecord e)
     {
         SafeInvokeMethod(GetType(), this, ApplyMehodName, e);
