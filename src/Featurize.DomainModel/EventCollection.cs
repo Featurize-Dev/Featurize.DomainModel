@@ -4,7 +4,7 @@
 /// A Append only EventCollection
 /// </summary>
 /// <typeparam name="TId">The Type of the aggregateId</typeparam>
-public class EventCollection<TId> : IReadOnlyCollection<EventRecord>
+public sealed class EventCollection<TId> : IReadOnlyCollection<EventRecord>
     where TId : struct
 {
     private EventRecord[] _events = Array.Empty<EventRecord>();
@@ -48,15 +48,6 @@ public class EventCollection<TId> : IReadOnlyCollection<EventRecord>
         => _events.Length;
 
     /// <summary>
-    /// Creates a new EventCollection for an AggregateId
-    /// </summary>
-    /// <param name="aggregateId"></param>
-    private EventCollection(TId aggregateId)
-    {
-        AggregateId = aggregateId;
-    }
-
-    /// <summary>
     /// Creates an instance of an EventCollection
     /// </summary>
     /// <param name="aggregateId">The id of the aggregate</param>
@@ -97,4 +88,9 @@ public class EventCollection<TId> : IReadOnlyCollection<EventRecord>
     /// <returns>Events that are committed</returns>
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         => GetEnumerator();
+
+    private EventCollection(TId aggregateId)
+    {
+        AggregateId = aggregateId;
+    }
 }

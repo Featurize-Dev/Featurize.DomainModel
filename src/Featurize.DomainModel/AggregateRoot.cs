@@ -52,18 +52,6 @@ public abstract class AggregateRoot<TSelf, TId>
     }
 
     /// <summary>
-    /// Adds and applies an event to the aggregate.
-    /// </summary>
-    /// <param name="e"></param>
-    internal void RecordEvent(EventRecord e)
-    {
-        ArgumentNullException.ThrowIfNull(e, nameof(e));
-        ArgumentNullException.ThrowIfNull(Id, nameof(Id));
-
-        RecordEvent(e, true);
-    }
-
-    /// <summary>
     /// Refresh aggregate from an event stream. 
     /// </summary>
     /// <param name="events">a event collection.</param>
@@ -82,6 +70,19 @@ public abstract class AggregateRoot<TSelf, TId>
     /// <returns>a event collection.</returns>
     public EventCollection<TId> GetUncommittedEvents()
         => _events.GetUncommittedEvents();
+
+
+    /// <summary>
+    /// Adds and applies an event to the aggregate.
+    /// </summary>
+    /// <param name="e"></param>
+    internal void RecordEvent(EventRecord e)
+    {
+        ArgumentNullException.ThrowIfNull(e, nameof(e));
+        ArgumentNullException.ThrowIfNull(Id, nameof(Id));
+
+        RecordEvent(e, true);
+    }
 
     private void RecordEvent(EventRecord e, bool isNew)
     {
