@@ -4,7 +4,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Featurize.DomainModel.Tests;
 
-public class EventCollection_Specs
+public partial class EventCollection_Specs
 {
     public static Random rnd = new();
 
@@ -35,7 +35,7 @@ public class EventCollection_Specs
         }
     }
 
-    public class Version
+    public partial class Version
     {
         public EventCollection<Guid> _collection;
         public Guid _id = Guid.NewGuid();
@@ -54,8 +54,6 @@ public class EventCollection_Specs
             _collection = EventCollection<Guid>.Create(_id, events);
 
         }
-
-        public record TestEvent() : EventRecord;
         
         [Test]
         public void should_equal_to_the_number_of_events()

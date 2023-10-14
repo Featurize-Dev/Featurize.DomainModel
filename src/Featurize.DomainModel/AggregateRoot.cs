@@ -1,4 +1,9 @@
-﻿namespace Featurize.DomainModel;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Featurize.DomainModel.Tests")]
+
+namespace Featurize.DomainModel;
 
 /// <summary>
 /// Base class for an AggregateRoot.
@@ -8,12 +13,14 @@
 public abstract class AggregateRoot<TSelf, TId>
     where TId : struct
 {
+    private const string ApplyMehodName = "Apply";
+
     private EventCollection<TId> _events;
 
     /// <summary>
     /// The identifier of this aggregate.
     /// </summary>
-    public TId Id { get; private set; }
+    public TId Id => _events.AggregateId;
 
     /// <summary>
     /// The version of the aggregate root.
@@ -41,16 +48,14 @@ public abstract class AggregateRoot<TSelf, TId>
     /// <param name="id">The identifier.</param>
     protected AggregateRoot(TId id)
     {
-        Id = id;
         _events = EventCollection<TId>.Create(id);
     }
-
 
     /// <summary>
     /// Adds and applies an event to the aggregate.
     /// </summary>
     /// <param name="e"></param>
-    protected void RecordEvent(EventRecord e)
+    internal void RecordEvent(EventRecord e)
     {
         ArgumentNullException.ThrowIfNull(e, nameof(e));
         ArgumentNullException.ThrowIfNull(Id, nameof(Id));
@@ -80,15 +85,31 @@ public abstract class AggregateRoot<TSelf, TId>
 
     private void RecordEvent(EventRecord e, bool isNew)
     {
-        Apply(e);
+        ApplyInternal(e);
         if (isNew)
         {
             _events.Append(e);
         }
     }
 
-    private void Apply(EventRecord e)
+    private void ApplyInternal(EventRecord e)
     {
-        this.AsDynamic().Apply(e);
+        SafeInvokeMethod(GetType(), this, ApplyMehodName, e);
+    }
+
+    private void SafeInvokeMethod(Type type, object target, string name, params object[] args)
+    {
+        const BindingFlags privateOrPublicMethodFlags = BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        try
+        {
+            type.InvokeMember(name, privateOrPublicMethodFlags, null, target, args);
+        }
+        catch (MissingMethodException)
+        {
+            if (type.BaseType != null)
+            {
+                SafeInvokeMethod(type.BaseType, target, name, args);
+            }
+        }
     }
 }
