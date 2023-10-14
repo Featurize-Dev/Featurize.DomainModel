@@ -51,7 +51,7 @@ public partial class EventCollection_Specs
                 events[i] = new TestEvent();
             }
 
-            _collection = EventCollection<Guid>.Create(_id, events);
+            _collection = EventCollection.Create(_id, events);
 
         }
         
@@ -86,7 +86,7 @@ public partial class EventCollection_Specs
                 events[i] = new TestEvent();
             }
 
-            _collection = EventCollection<Guid>.Create(_id, events);
+            _collection = EventCollection.Create(_id, events);
 
         }
 
@@ -108,7 +108,7 @@ public partial class EventCollection_Specs
         [Test]
         public void should_be_date_of_first_event_applied_event()
         {
-            var collection = EventCollection<Guid>.Create(Guid.NewGuid());
+            var collection = EventCollection.Create(Guid.NewGuid());
             var firstEvent = new TestEvent() { OccouredOn = DateTimeOffset.UtcNow };
 
             collection.Append(firstEvent);
@@ -134,7 +134,7 @@ public partial class EventCollection_Specs
                 events[i] = new TestEvent() { OccouredOn = DateTimeOffset.UtcNow.AddMinutes(i) };
             }
 
-            var collection = EventCollection<Guid>.Create(Guid.NewGuid(), events);
+            var collection = EventCollection.Create(Guid.NewGuid(), events);
 
             collection.CreatedOn.Should().Be(firstEvent.OccouredOn);
         }

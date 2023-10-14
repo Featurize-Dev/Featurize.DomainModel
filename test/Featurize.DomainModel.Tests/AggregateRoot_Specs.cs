@@ -43,7 +43,7 @@ public sealed class AggregateRoot_Specs
 
             var aggregate = TestAggregate.Create(Guid.NewGuid());
 
-            var events = EventCollection<Guid>.Create(aggregateId, new[]
+            var events = EventCollection.Create(aggregateId, new[]
             {
                 new TestEvent(),
             });
@@ -73,7 +73,7 @@ public sealed class AggregateRoot_Specs
             var aggregateId = Guid.NewGuid();
 
             var aggregate = TestAggregate.Create(aggregateId);
-            var events = EventCollection<Guid>.Create(aggregateId, new[]
+            var events = EventCollection.Create(aggregateId, new[]
             {
                 new TestEvent(),
                 new TestEvent(),
@@ -91,7 +91,7 @@ public sealed class AggregateRoot_Specs
         public void should_be_same_as_version_when_no_new_events()
         {
             var aggregateId = Guid.NewGuid();
-            var events = EventCollection<Guid>.Create(aggregateId, new[]
+            var events = EventCollection.Create(aggregateId, new[]
             {
                 new TestEvent(),
                 new TestEvent(),
@@ -109,7 +109,7 @@ public sealed class AggregateRoot_Specs
         public void should_increase_on_new_event()
         {
             var aggregateId = Guid.NewGuid();
-            var events = EventCollection<Guid>.Create(aggregateId, new[]
+            var events = EventCollection.Create(aggregateId, new[]
             {
                 new TestEvent(),
                 new TestEvent(),
@@ -138,7 +138,7 @@ public sealed class AggregateRoot_Specs
         {
             var aggregateId = Guid.NewGuid();
             var aggregate = TestAggregate.Create(aggregateId);
-            var events = EventCollection<Guid>.Create(aggregateId, new[]
+            var events = EventCollection.Create(aggregateId, new[]
             {
                 new TestEvent(),
                 new TestEvent(),

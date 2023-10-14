@@ -4,6 +4,23 @@
 /// A Append only EventCollection
 /// </summary>
 /// <typeparam name="TId">The Type of the aggregateId</typeparam>
+public static class EventCollection
+{
+    /// <summary>
+    /// Creates an instance of an EventCollection
+    /// </summary>
+    /// <param name="aggregateId">The id of the aggregate</param>
+    /// <param name="events">Array of events</param>
+    /// <returns>Returns an event collection </returns>
+    public static EventCollection<TId> Create<TId>(TId aggregateId, EventRecord[]? events = null)
+        where TId : struct
+        => EventCollection<TId>.Create(aggregateId, events);
+}
+
+/// <summary>
+/// A Append only EventCollection
+/// </summary>
+/// <typeparam name="TId">The Type of the aggregateId</typeparam>
 public sealed class EventCollection<TId> : IReadOnlyCollection<EventRecord>
     where TId : struct
 {
@@ -53,7 +70,7 @@ public sealed class EventCollection<TId> : IReadOnlyCollection<EventRecord>
     /// <param name="aggregateId">The id of the aggregate</param>
     /// <param name="events">Array of events</param>
     /// <returns>Returns an event collection </returns>
-    public static EventCollection<TId> Create(TId aggregateId, EventRecord[]? events = null)
+    internal static EventCollection<TId> Create(TId aggregateId, EventRecord[]? events = null)
         => new(aggregateId)
         {
             _events = events ?? Array.Empty<EventRecord>(),
