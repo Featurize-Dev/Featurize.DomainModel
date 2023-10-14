@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <Import Project="common.props" />
+
+  <PropertyGroup>
+    <PackageIcon>logo_128.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/Featurize-Dev/Featurize</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Featurize-Dev/Featurize</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<DebugType>portable</DebugType>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Package icon. -->
+    <None Include="$(MSBuildThisFileDirectory)..\logo_128.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>

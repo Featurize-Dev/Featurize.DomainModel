@@ -1,0 +1,22 @@
+# Rules in this file were initially inferred by Visual Studio IntelliCode from the C:\_tjip\EDM-POC\services codebase based on best match to current usage at 12/04/2022
+# You can modify the rules from these initially generated values to suit your own policies
+# You can learn more about editorconfig here: https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+[*.cs]
+
+
+#Style - modifier options
+
+#prefer accessibility modifiers to be declared except for public interface members. This will currently not differ from always and will act as future proofing for if C# adds default interface methods.
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:suggestion
+csharp_style_namespace_declarations=file_scoped:warning
+
+
+# Instance fields are camelCase and start with _
+dotnet_naming_rule.instance_fields_should_be_camel_case.severity = suggestion
+dotnet_naming_rule.instance_fields_should_be_camel_case.symbols = instance_fields
+dotnet_naming_rule.instance_fields_should_be_camel_case.style = instance_field_style
+
+dotnet_naming_symbols.instance_fields.applicable_kinds = field
+
+dotnet_naming_style.instance_field_style.capitalization = camel_case
+dotnet_naming_style.instance_field_style.required_prefix = _

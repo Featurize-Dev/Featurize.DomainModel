@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+    <Description>Featurize assists in Feature Driven Developement</Description>
+    <Authors>Patrick Evers</Authors>
+    <Owners>Featurize</Owners>
+    <PackageTags>Feature Driven Development; Feature Driven Architecture</PackageTags>
+    <Company>Featurize</Company>
+    <Copyright>Copyright © Featurize 2022</Copyright>
+    <LangVersion>11.0</LangVersion>
+  </PropertyGroup>
+  
+</Project>
