@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Featurize.DomainModel.Tests")]
@@ -29,6 +30,19 @@ public static class AggregateRoot
         if(method == null)
         {
             var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, new[] { typeof(TId) });
+
+            if(constructor == null)
+            {
+                try
+                {
+                    return Activator.CreateInstance<TAggregate>();
+                } 
+                catch (MissingMethodException e)
+                {
+                    // catch if parameterles constructor is not found.
+                }
+            }
+
             var result = constructor?.Invoke(new object[] { aggregateId });
             if (result is TAggregate returnValue) return returnValue;
         } 

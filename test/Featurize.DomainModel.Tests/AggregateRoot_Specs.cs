@@ -5,11 +5,15 @@ namespace Featurize.DomainModel.Tests;
 public sealed class AggregateRoot_Specs
 {
     [Test]
-    public void should_throw_if_create_method_notfound()
+    public void should_throw_if_create_method_or_constructor_is_notfound()
     {
         var fails = () => AggregateRoot.Create<CreateTestAggregate, Guid>(Guid.NewGuid());
         fails.Should().Throw<NotImplementedException>();
+    }
 
+    [Test]
+    public void should_create_through_create_factory_method()
+    {
         var succeeds = () => AggregateRoot.Create<TestAggregate, Guid>(Guid.NewGuid());
         succeeds.Should().NotThrow<NotImplementedException>();
     }
@@ -19,7 +23,6 @@ public sealed class AggregateRoot_Specs
     {
         var succeedsTo = () => AggregateRoot.Create<CreateTestAggregateWithPrivateConstructor, Guid>(Guid.NewGuid());
         succeedsTo.Should().NotThrow<NotImplementedException>();
-        
     }
 
     [Test]
@@ -27,7 +30,6 @@ public sealed class AggregateRoot_Specs
     {
         var succeedsTo = () => AggregateRoot.Create<CreateTestAggregateWithPublicConstructor, Guid>(Guid.NewGuid());
         succeedsTo.Should().NotThrow<NotImplementedException>();
-
     }
 
     [Test]

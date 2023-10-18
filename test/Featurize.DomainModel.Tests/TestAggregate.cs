@@ -28,7 +28,7 @@ public sealed class TestAggregate : AggregateRoot<TestAggregate, Guid>
 
 public sealed class CreateTestAggregate : AggregateRoot<CreateTestAggregate, Guid>
 {
-    public CreateTestAggregate(Guid id) : base(id)
+    private CreateTestAggregate() : base(Guid.NewGuid())
     {
     }
 }
@@ -49,10 +49,5 @@ public sealed class CreateTestAggregateWithPublicConstructor : AggregateRoot<Cre
 {
     public CreateTestAggregateWithPublicConstructor(Guid id) : base(id)
     {
-    }
-
-    public static CreateTestAggregateWithPublicConstructor Create()
-    {
-        return new CreateTestAggregateWithPublicConstructor(Guid.NewGuid());
     }
 }
