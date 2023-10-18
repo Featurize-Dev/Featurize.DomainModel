@@ -24,13 +24,20 @@ public static class AggregateRoot
     {
         var methodName = "Create";
         var type = typeof(TAggregate);
-        var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+        var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static, new[] { typeof(TId) });
 
-        if(method != null)
+        if(method == null)
         {
+            var constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, new[] { typeof(TId) });
+            var result = constructor?.Invoke(new object[] { aggregateId });
+            if (result is TAggregate returnValue) return returnValue;
+        } 
+        else 
+        { 
             var result = method.Invoke(null, new object[] { aggregateId });
             if(result is TAggregate returnValue) return returnValue;
         }
+        
         throw new NotImplementedException($"The aggregate does not have a public static method 'public static {type.Name} {methodName}({typeof(TId).Name} id)'.");
     }
 }

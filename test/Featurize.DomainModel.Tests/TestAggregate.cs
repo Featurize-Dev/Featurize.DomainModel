@@ -32,3 +32,27 @@ public sealed class CreateTestAggregate : AggregateRoot<CreateTestAggregate, Gui
     {
     }
 }
+
+public sealed class CreateTestAggregateWithPrivateConstructor : AggregateRoot<CreateTestAggregateWithPrivateConstructor, Guid>
+{
+    private CreateTestAggregateWithPrivateConstructor(Guid id) : base(id)
+    {
+    }
+
+    public static CreateTestAggregateWithPrivateConstructor Create()
+    {
+        return new CreateTestAggregateWithPrivateConstructor(Guid.NewGuid());
+    }
+}
+
+public sealed class CreateTestAggregateWithPublicConstructor : AggregateRoot<CreateTestAggregateWithPublicConstructor, Guid>
+{
+    public CreateTestAggregateWithPublicConstructor(Guid id) : base(id)
+    {
+    }
+
+    public static CreateTestAggregateWithPublicConstructor Create()
+    {
+        return new CreateTestAggregateWithPublicConstructor(Guid.NewGuid());
+    }
+}

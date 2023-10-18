@@ -1,10 +1,4 @@
 ﻿using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Featurize.DomainModel.Tests.EventCollection_Specs.Version;
 
 namespace Featurize.DomainModel.Tests;
 
@@ -18,6 +12,22 @@ public sealed class AggregateRoot_Specs
 
         var succeeds = () => AggregateRoot.Create<TestAggregate, Guid>(Guid.NewGuid());
         succeeds.Should().NotThrow<NotImplementedException>();
+    }
+
+    [Test]
+    public void should_create_aggregate_through_private_constructor()
+    {
+        var succeedsTo = () => AggregateRoot.Create<CreateTestAggregateWithPrivateConstructor, Guid>(Guid.NewGuid());
+        succeedsTo.Should().NotThrow<NotImplementedException>();
+        
+    }
+
+    [Test]
+    public void should_create_aggregate_through_public_constructor()
+    {
+        var succeedsTo = () => AggregateRoot.Create<CreateTestAggregateWithPublicConstructor, Guid>(Guid.NewGuid());
+        succeedsTo.Should().NotThrow<NotImplementedException>();
+
     }
 
     [Test]
