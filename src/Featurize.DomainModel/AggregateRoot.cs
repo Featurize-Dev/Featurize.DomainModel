@@ -104,7 +104,7 @@ public abstract class AggregateRoot<TSelf, TId>
     /// Adds and applies an event to the aggregate.
     /// </summary>
     /// <param name="e"></param>
-    protected void RecordEvent(EventRecord e)
+    protected internal void RecordEvent(EventRecord e)
     {
         ArgumentNullException.ThrowIfNull(e, nameof(e));
         ArgumentNullException.ThrowIfNull(Id, nameof(Id));
