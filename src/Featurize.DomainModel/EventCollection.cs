@@ -3,7 +3,6 @@
 /// <summary>
 /// A Append only EventCollection
 /// </summary>
-/// <typeparam name="TId">The Type of the aggregateId</typeparam>
 public static class EventCollection
 {
     /// <summary>
@@ -46,7 +45,7 @@ public sealed class EventCollection<TId> : IReadOnlyCollection<EventRecord>
     /// The creation date of this event stream.
     /// </summary>
     public DateTimeOffset? CreatedOn
-        => _events.Any()
+        => _events.Length != 0
         ? _events.FirstOrDefault()?.OccouredOn
         : _uncomitted.FirstOrDefault()?.OccouredOn;
 
@@ -54,7 +53,7 @@ public sealed class EventCollection<TId> : IReadOnlyCollection<EventRecord>
     /// The date of the last modification.
     /// </summary>
     public DateTimeOffset? LastModifiedOn
-        => _uncomitted.Any()
+        => _uncomitted.Count != 0
         ? _uncomitted.LastOrDefault()?.OccouredOn
         : _events.LastOrDefault()?.OccouredOn;
 

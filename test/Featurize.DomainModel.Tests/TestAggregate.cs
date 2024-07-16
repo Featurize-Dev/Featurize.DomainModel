@@ -2,7 +2,7 @@
 
 public record TestEvent() : EventRecord;
 public record TestEventWithoutApply() : EventRecord;
-public sealed class TestAggregate : AggregateRoot<TestAggregate, Guid>
+public sealed class TestAggregate : AggregateRoot<Guid>
 {
     public bool ApplyCalled { get; private set; }
     public int ApplyCalledTimes { get; private set; }
@@ -26,14 +26,14 @@ public sealed class TestAggregate : AggregateRoot<TestAggregate, Guid>
     }
 }
 
-public sealed class CreateTestAggregate : AggregateRoot<CreateTestAggregate, Guid>
+public sealed class CreateTestAggregate : AggregateRoot<Guid>
 {
     private CreateTestAggregate() : base(Guid.NewGuid())
     {
     }
 }
 
-public sealed class CreateTestAggregateWithPrivateConstructor : AggregateRoot<CreateTestAggregateWithPrivateConstructor, Guid>
+public sealed class CreateTestAggregateWithPrivateConstructor : AggregateRoot<Guid>
 {
     private CreateTestAggregateWithPrivateConstructor(Guid id) : base(id)
     {
@@ -45,7 +45,7 @@ public sealed class CreateTestAggregateWithPrivateConstructor : AggregateRoot<Cr
     }
 }
 
-public sealed class CreateTestAggregateWithPublicConstructor : AggregateRoot<CreateTestAggregateWithPublicConstructor, Guid>
+public sealed class CreateTestAggregateWithPublicConstructor : AggregateRoot<Guid>
 {
     public CreateTestAggregateWithPublicConstructor(Guid id) : base(id)
     {
