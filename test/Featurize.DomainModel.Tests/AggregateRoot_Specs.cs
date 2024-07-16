@@ -156,6 +156,23 @@ public sealed class AggregateRoot_Specs
     public class LoadFromHistory
     {
         [Test]
+        public void static_version_should_apply_events()
+        {
+            var aggregateId = Guid.NewGuid();
+            var events = EventCollection.Create(aggregateId, new[]
+            {
+                new TestEvent(),
+                new TestEvent(),
+                new TestEvent(),
+            });
+
+            var aggregate = AggregateRoot.LoadFromHistory<TestAggregate, Guid>(events);
+
+            aggregate.ApplyCalled.Should().BeTrue();
+            aggregate.ApplyCalledTimes.Should().Be(events.Version + 1);
+        }
+
+        [Test]
         public void should_apply_events()
         {
             var aggregateId = Guid.NewGuid();

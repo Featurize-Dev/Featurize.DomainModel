@@ -54,6 +54,22 @@ public static class AggregateRoot
         
         throw new NotImplementedException($"The aggregate does not have a public static method 'public static {type.Name} {methodName}({typeof(TId).Name} id)'.");
     }
+
+    /// <summary>
+    /// Loads an aggregate of <typeparamref name="TAggregate"/> from a <see cref="EventCollection{TId}" />.
+    /// </summary>
+    /// <typeparam name="TAggregate"></typeparam>
+    /// <typeparam name="TId"></typeparam>
+    /// <param name="events">The stream of events.</param>
+    /// <returns>A instance of <typeparamref name="TAggregate"/>.</returns>
+    public static TAggregate LoadFromHistory<TAggregate, TId>(EventCollection<TId> events)
+        where TAggregate : AggregateRoot<TId>
+        where TId : struct
+    {
+        var aggregate = Create<TAggregate, TId>(events.AggregateId);
+        aggregate.LoadFromHistory(events);
+        return aggregate;
+    }
 }
 
 /// <summary>
