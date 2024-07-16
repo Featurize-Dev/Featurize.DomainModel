@@ -20,7 +20,7 @@ public static class AggregateRoot
     /// <returns></returns>
     /// <exception cref="NotImplementedException">Throw an exception if the method is not implemented.</exception>
     public static TAggregate Create<TAggregate, TId>(TId aggregateId)
-        where TAggregate : AggregateRoot<TAggregate, TId>
+        where TAggregate : AggregateRoot<TId>
         where TId: struct
     {
         var methodName = "Create";
@@ -59,9 +59,8 @@ public static class AggregateRoot
 /// <summary>
 /// Base class for an AggregateRoot.
 /// </summary>
-/// <typeparam name="TSelf">The type of the aggregate.</typeparam>
 /// <typeparam name="TId">The type of the Identifier of the aggregate.</typeparam>
-public abstract class AggregateRoot<TSelf, TId>
+public abstract class AggregateRoot<TId>
     where TId : struct
 {
     private EventCollection<TId> _events;
@@ -92,7 +91,7 @@ public abstract class AggregateRoot<TSelf, TId>
     public DateTimeOffset? LastModifiedOn => _events.LastModifiedOn;
 
     /// <summary>
-    /// Constructor to instanciate a new instance of <see cref="TSelf" />.
+    /// Constructor to instanciate a new instance. />.
     /// </summary>
     /// <param name="id">The identifier.</param>
     protected AggregateRoot(TId id)
@@ -142,13 +141,13 @@ public abstract class AggregateRoot<TSelf, TId>
         }
     }
 
-    private const string ApplyMehodName = "Apply";
+    private const string _applyMehodName = "Apply";
     private void ApplyInternal(EventRecord e)
     {
-        SafeInvokeMethod(GetType(), this, ApplyMehodName, e);
+        AggregateRoot<TId>.SafeInvokeMethod(GetType(), this, _applyMehodName, e);
     }
 
-    private void SafeInvokeMethod(Type type, object target, string name, params object[] args)
+    private static void SafeInvokeMethod(Type type, object target, string name, params object[] args)
     {
         const BindingFlags privateOrPublicMethodFlags = BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
         try
@@ -159,7 +158,7 @@ public abstract class AggregateRoot<TSelf, TId>
         {
             if (type.BaseType != null)
             {
-                SafeInvokeMethod(type.BaseType, target, name, args);
+                AggregateRoot<TId>.SafeInvokeMethod(type.BaseType, target, name, args);
             }
         }
     }
