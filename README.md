@@ -28,7 +28,7 @@ Or include it in your project file:
 
 ## Usage
 
-### Create an aggregate root
+### Create an `User` aggregate to store user information.
 
 ```csharp
 
@@ -39,14 +39,14 @@ public sealed class User : AggregateRoot<Guid>
 
     public string Password { get; private set; }
 
-    private User(Guid id) : base(id)
+    private User() : base(Guid.NewGuid())
     {
 
     }
 
     public static User Create(string firstname, string lastname)
     {
-        var aggregate = new User(Guid.NewGuid());
+        var aggregate = new User();
         aggregate.RecordEvent(new UserCreated(firstname, lastname));
         return aggregate;
     }
@@ -60,7 +60,7 @@ public sealed class User : AggregateRoot<Guid>
     {
         Firstname = e.Firstname;
         Lastname = e.Lastname;
-        Password = Guid.NewGuid().ToStirng();
+        Password = Guid.NewGuid().ToString();
     }
 
     internal void Apply(PasswordChanged e)
@@ -74,9 +74,7 @@ public record PasswordChanged(string Password) : EventRecord;
 
 ```
 
-### ussage
-
-#### Create an user aggregate root.
+#### Use the `User` aggregate and store the events in some storage.
 
 ```csharp
 
@@ -92,7 +90,7 @@ storage.Save(events);
 
 ```
 
-#### Load an user aggregate from event collection
+#### Load an `User` aggregate from an `EventCollection`
 
 ```csharp
 
